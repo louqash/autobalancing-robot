@@ -1,0 +1,4 @@
+Port 22
+PermitRootLogin yes
+AuthorizedKeysFile	.ssh/authorized_keys
+PermitEmptyPasswords yes

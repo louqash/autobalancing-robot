@@ -1,0 +1,22 @@
+menuconfig BR2_AUTOBALANCER_CONFIG
+	bool "autobalancer"
+  depends on BR2_PACKAGE_MOTOR_DRIVER
+	help
+    Autobalancer package options
+
+if BR2_AUTOBALANCER_CONFIG
+
+choice
+  prompt"Autobalnce mode of operation"
+  default BR2_PACKAGE_AUTOBALANCER_PID
+
+  config BR2_PACKAGE_AUTOBALANCER_PID
+    bool "PID based"
+    depends on BR2_PACKAGE_I2C_TOOLS
+
+  config BR2_PACKAGE_AUTOBALANCER_ML
+    bool "ML based"
+
+	endchoice
+
+endif

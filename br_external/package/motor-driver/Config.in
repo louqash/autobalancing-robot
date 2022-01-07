@@ -1,0 +1,5 @@
+config BR2_PACKAGE_MOTOR_DRIVER
+  bool "motor_driver"
+  depends on BR2_LINUX_KERNEL
+  help
+    Custom Motor Driver as a Linux Kernel Module

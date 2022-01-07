@@ -1,0 +1,19 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+  compatible = "brcm,bcm2835";
+
+  fragment@0 {
+    target-path = "/";
+
+    __overlay__ {
+      motor_controller: motor_controller {
+        compatible = "lsroka,motor-controller";
+        pwms = <&pwm 0 5000>, <&pwm 1 5000>;
+        pwm-names = "one", "two";
+      };
+    };
+  };
+};
+

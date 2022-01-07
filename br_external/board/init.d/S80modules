@@ -1,0 +1,31 @@
+#!/bin/sh
+#
+# Load necessary kernel modules
+#
+
+modules=(i2c-dev,g_serial)
+
+case "$1" in
+  start)
+    for mod in "${modules[@]}"; do 
+      modprobe "$mod"
+    done
+    echo "OK"
+  ;;
+  stop)
+    for mod in "${modules[@]}"; do 
+      modprobe -r "$mod"
+    done
+    echo "OK"
+  ;;
+  reload)
+    "$0" stop
+    "$0" start
+  ;;
+  *)
+    echo "Usage: $0 {start|stop|reload}"
+    exit 1
+esac
+
+exit $?
+

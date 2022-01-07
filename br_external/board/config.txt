@@ -1,0 +1,17 @@
+start_file=start.elf
+fixup_file=fixup.dat
+
+kernel=zImage
+
+disable_overscan=1
+
+# How much memory in MB to assign to the GPU on Pi models having
+# 256, 512 or 1024 MB total memory
+gpu_mem_256=100
+gpu_mem_512=100
+gpu_mem_1024=100
+
+dtparam=i2c1=on,dwc
+dtoverlay=pwm-2chan
+dtoverlay=motor-driver
+
