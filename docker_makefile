@@ -1,40 +1,31 @@
 MAKE = make BR2_EXTERNAL=$(shell pwd)/br_external -C buildroot
 
-.PHONY: default clean save config menuconfig all rebuild deploy
+.PHONY: default clean save menuconfig ml pid rebuild deploy
 
-default: all
+default: ml
 
 clean:
-	rm -rf buildroot/output
+	rm -rf artifacts/*
 
 save:
 	${MAKE} savedefconfig
 
-.autobalancer_defconfig:
-	@cp br_external/configs/autobalancer_defconfig .autobalancer_defconfig; \
-	${MAKE} autobalancer_defconfig
-
-config: .autobalancer_defconfig
-	@diff br_external/configs/autobalancer_defconfig .autobalancer_defconfig || { \
-	 	echo -n "This will override current buildroot .config. Are you sure? [y/N] " && read ans && [ $${ans:-N} = y ] && { \
-			${MAKE} autobalancer_defconfig; \
-			cp br_external/configs/autobalancer_defconfig .autobalancer_defconfig; \
-	 	} || exit 1; \
-	}
-
 menuconfig:
 	${MAKE} menuconfig
 
-all: config
+ml:
+	${MAKE} ml_autobalancer_defconfig
 	${MAKE} all
 
-rebuild: buildroot
-	${MAKE} autobalancer-pid-rebuild motor-driver-rebuild all
+pid:
+	${MAKE} pid_autobalancer_defconfig
+	${MAKE} all
 
-deploy:
-	scp -q output/build/motor-driver-1.0/motor-driver.ko rpi:/lib/modules/5.10.36/extra/motor-driver.ko
-	scp -q output/build/autobalancer-pid-0.2/pid rpi:/usr/bin/pid
-	ssh -q rpi reboot
+rebuild-ml:
+	${MAKE} autobalancer-ml-rebuild motor-driver-rebuild all
+
+rebuild-pid:
+	${MAKE} autobalancer-pid-rebuild motor-driver-rebuild all
 
 .DEFAULT:
 	${MAKE} "$@"

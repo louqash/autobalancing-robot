@@ -1,9 +1,9 @@
 #!/bin/bash
 
-mkdir -p tensorflow_src/build
-cd tensorflow_src/build
+mkdir -p tensorflow/build
+cd tensorflow/build
 
-ARMCC_PREFIX=${HOME}/toolchains/arm-rpi-linux-gnueabihf/x64-gcc-6.5.0/arm-rpi-linux-gnueabihf/bin/arm-rpi-linux-gnueabihf-
+ARMCC_PREFIX=/opt/toolchains/arm-rpi-linux-gnueabihf/x64-gcc-6.5.0/arm-rpi-linux-gnueabihf/bin/arm-rpi-linux-gnueabihf-
 ARMCC_FLAGS="-march=armv6 -mfpu=vfp -funsafe-math-optimizations"
 
 if [[ ! -f "libtensorflow-lite.a" ]]; then

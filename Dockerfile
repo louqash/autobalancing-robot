@@ -2,7 +2,7 @@ FROM ubuntu:21.04
 
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y \
-    curl git make gcc g++ file wget cpio unzip rsync bc bzip2 libncurses-dev
+    curl git make cmake gcc g++ file wget cpio unzip rsync bc bzip2 libncurses-dev
 
 WORKDIR /workdir
 
@@ -15,7 +15,12 @@ RUN mkdir /opt/toolchains && \
     rm rpi-toolchain.tar.gz
 RUN mv /opt/toolchains/rpi-newer-crosstools-$TOOLCHAIN_VERSION /opt/toolchains/arm-rpi-linux-gnueabihf
 
-COPY docker_makefile Makefile
-
 RUN git clone https://github.com/buildroot/buildroot && cd buildroot && git checkout 0f42d06ecf350aaa2d20bf716bf549d55b95982e
 RUN ln -sf ../artifacts buildroot/output
+
+# Download and build tensorflow light
+RUN git clone --branch "v2.7.0" https://github.com/tensorflow/tensorflow
+COPY build-tensorflow.sh .
+RUN chmod +x build-tensorflow.sh && ./build-tensorflow.sh
+
+COPY docker_makefile Makefile
