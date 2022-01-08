@@ -26,7 +26,7 @@ motor_driver: config
 	${MAKE} motor-driver-rebuild
 
 all: config
-	${MAKE} autobalancer-pid-rebuild autobalancer-ml-rebuild motor-driver-rebuild all
+	${MAKE} autobalancer-pid-dirclean autobalancer-ml-dirclean motor-driver-dirclean all
 
 .DEFAULT:
 	${MAKE} "$@"
