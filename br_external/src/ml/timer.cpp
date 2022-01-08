@@ -1,7 +1,8 @@
 #include "timer.hpp"
 #include <cmath>
 
-Timer::Timer(float target_dt) {
+Timer::Timer(float target_dt)
+{
     this->target_dt = target_dt;
     clock_gettime(CLOCK_REALTIME, &last);
 }

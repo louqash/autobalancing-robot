@@ -1,5 +1,0 @@
-config BR2_PACKAGE_TENSORFLOW_LITE
-  bool "tensorflow-lite"
-  depends on BR2_LINUX_KERNEL
-  help
-    Tensorflow lite library

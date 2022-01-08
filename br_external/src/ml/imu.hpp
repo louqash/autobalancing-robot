@@ -384,7 +384,8 @@
 
 #define MPU6050_FIFO_DEFAULT_TIMEOUT 11000
 
-class IMU: protected i2cDevice {
+class IMU : protected i2cDevice
+{
  public:
   IMU(): i2cDevice(MPU6050_DEFAULT_ADDRESS) {};
 

@@ -7,7 +7,7 @@ float PIDController::get_next_output(float sample, float dt)
 {
     sample -= setpoint;
     // sample *= (std::signbit(sample)*-2 + 1) * sample;
-    if(sample < 1 && sample > -1)
+    if (sample < 1 && sample > -1)
     {
         sample = std::asin(sample);
     }

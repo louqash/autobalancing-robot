@@ -12,7 +12,6 @@
 #include <linux/io.h>
 #include <linux/gpio.h>
 
-#include "motor-driver.h"
 #define AI1 20
 #define AI2 21
 #define BI1 26
@@ -84,7 +83,7 @@ static ssize_t engine_power_store(struct device *dev,
     CHK_ERROR(pwm_config(pwmB, (int)power, 1000));
     CHK_ERROR(pwm_enable(pwmA));
     CHK_ERROR(pwm_enable(pwmB));
-    printk(KERN_INFO "ioctl MOTOR_SET cmd with value: %d", (int)power);
+    printk(KERN_INFO "Engine power set to value: %d", (int)power);
 
     return count;
 }

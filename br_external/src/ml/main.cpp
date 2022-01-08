@@ -19,17 +19,17 @@
 #include "logger.hpp"
 #include "timer.hpp"
 
-#define TFLITE_MINIMAL_CHECK(x)                              \
-  if (!(x)) {                                                \
-    fprintf(stderr, "Error at %s:%d\n", __FILE__, __LINE__); \
-    exit(1);                                                 \
-  }
-
+#define TFLITE_MINIMAL_CHECK(x)                                  \
+    if (!(x))                                                    \
+    {                                                            \
+        fprintf(stderr, "Error at %s:%d\n", __FILE__, __LINE__); \
+        exit(1);                                                 \
+    }
 
 int res;
 int fd = -1;
 volatile bool flag = 1;
-const char* zero = "0";
+const char *zero = "0";
 
 class PIDLogData : DataTemplate
 {
@@ -53,70 +53,10 @@ void set_engine_speed(float val)
     res = write(fd, string_buf, 5);
 }
 
-void engine_stop(int sig) {
+void engine_stop(int sig)
+{
     flag = 0;
 }
-
-
-//   gyro.init();
-
-//   float setpoint = 0.F;
-//   timespec current, last;
-//   clock_gettime(CLOCK_REALTIME, &last);
-
-//   int n_prev = 20;
-//   float* prev_samples = (float*)calloc(n_prev, sizeof(float));
-//   size_t filled = 0;
-
-//   char engine_buf[10];
-//   float target_dt = 0.1;
-//   float dt_sum = 0;
-//   std::cout << "befor while" << std::endl;
-//   while (flag) {
-//     clock_gettime(CLOCK_REALTIME, &current);
-//     float dt = (current.tv_nsec - last.tv_nsec) / 1e9 + (last.tv_nsec > current.tv_nsec);
-//     dt_sum += dt;
-//     if(dt_sum < target_dt) {
-//       continue;
-//     }
-//     dt_sum = std::fmod(dt_sum, target_dt);
-
-//     float sample = (setpoint - gyro.getNewAngle(dt)) / 90.F;
-//     //if(sample > 90 || sample < -90) {
-//     //  write(fd, zero, 1);
-//     //  continue;
-//     //}
-//     last.tv_nsec = current.tv_nsec;
-//     interpreter->typed_input_tensor<float>(0)[0] = sample;
-//     memcpy(&interpreter->typed_input_tensor<float>(0)[1], prev_samples, n_prev*sizeof(float));
-
-//     if(filled == n_prev) {
-//       interpreter->Invoke();
-
-//       std::cout << "sending to engines" << std::endl;
-//       float output = interpreter->typed_output_tensor<float>(0)[0];
-//       memset(engine_buf, 0, 10);
-//       sprintf(engine_buf, "%d", std::max(-1000, std::min((int32_t)(output * 700), 1000)));
-//       write(fd, engine_buf, 10);
-//     } else {
-//       ++filled;
-//     }
-
-//     //DT_history[idx++] = dt;
-//   }
-//   write(fd, zero, 1);
-
-//   //float sum = 0;
-//   //float max = 0;
-//   //for(int i = 0; i < idx; ++i) {
-//   //  sum += DT_history[i];
-//   //  max = std::max(max, DT_history[i]);
-//   //}
-//   //std::cout << "mean dt " << sum/idx << std::endl;
-//   //std::cout << "max dt " << max << std::endl;
-
-//   return 0;
-// }
 
 void main_loop(int argc, char **argv)
 {
@@ -124,7 +64,7 @@ void main_loop(int argc, char **argv)
     PIDLogData logframe;
     Timer timer(0.02);
 
-    const char* model_name = "new.tflite";
+    const char *model_name = "model.tflite";
     if (argc > 1)
     {
         model_name = argv[1];
@@ -164,10 +104,12 @@ void main_loop(int argc, char **argv)
     imu.enableDMP();
 
     float imu_angle = imu.getNewAngle();
-    while (imu_angle < 1.6) {}
+    while (imu_angle < 1.6)
+    {
+    }
 
-    int n_prev = 50 - 1;
-    float* prev_samples = (float*)calloc(n_prev, sizeof(float));
+    int n_prev = 50;
+    float *prev_samples = (float *)calloc(n_prev, sizeof(float));
     size_t filled = 0;
 
     for (int i = 0; i < n_prev; ++i)
@@ -183,20 +125,16 @@ void main_loop(int argc, char **argv)
         float dt = timer.get_dt();
         int c = 0;
         imu_angle = imu.getNewAngle();
-        //if (imu_angle > 1.6F || imu_angle < -1.6F)
-        //{
-        //    break;
-        //}
         interpreter->typed_input_tensor<float>(0)[0] = imu_angle;
-        memcpy(&interpreter->typed_input_tensor<float>(0)[1], prev_samples, n_prev*sizeof(float));
+        memcpy(&interpreter->typed_input_tensor<float>(0)[1], prev_samples, n_prev * sizeof(float));
         interpreter->Invoke();
 
         float output = interpreter->typed_output_tensor<float>(0)[0];
-        // set_engine_speed(output);
-        std::cout << output << std::endl;
+        set_engine_speed(output);
 
-        for(int i = n_prev-1; i > 0; --i) {
-            prev_samples[i] = prev_samples[i-1];
+        for (int i = n_prev - 1; i > 0; --i)
+        {
+            prev_samples[i] = prev_samples[i - 1];
         }
         prev_samples[0] = imu_angle;
 
