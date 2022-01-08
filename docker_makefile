@@ -13,13 +13,20 @@ save:
 menuconfig:
 	${MAKE} menuconfig
 
-ml:
-	${MAKE} ml_autobalancer_defconfig
-	${MAKE} autobalancer-ml-rebuild motor-driver-rebuild all
+config:
+	${MAKE} autobalancer_defconfig
 
-pid:
-	${MAKE} pid_autobalancer_defconfig
-	${MAKE} autobalancer-pid-rebuild motor-driver-rebuild all
+ml: config
+	${MAKE} autobalancer-ml-rebuild
+
+pid: config
+	${MAKE} autobalancer-pid-rebuild
+
+motor_driver: config
+	${MAKE} motor-driver-rebuild
+
+all: config
+	${MAKE} autobalancer-pid-rebuild autobalancer-ml-rebuild motor-driver-rebuild all
 
 .DEFAULT:
 	${MAKE} "$@"
