@@ -13,7 +13,7 @@ shell: build
 		autobalancer-builder \
 		/bin/bash
 
-ml pid: build
+ml pid motor_driverl all: build
 	@[ -d artifacts ] || mkdir artifacts
 	docker run -it \
 		-v $(shell pwd)/br_external:/workdir/br_external \
