@@ -1,0 +1,30 @@
+name: Build workflow
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Build project
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Prepare environment
+      run: mkdir ${{ github.workspace }}/artifacts
+
+    - name: Build the Docker image
+      run: docker build -t autobalancer-builder .
+
+    - name: Build project inside Docker
+      run: |
+        docker run \
+        -v ${{ github.workspace }}/br_external:/workdir/br_external \
+        -v ${{ github.workspace }}/artifacts:/workdir/artifacts \
+        autobalancer-builder \
+        make all
+
