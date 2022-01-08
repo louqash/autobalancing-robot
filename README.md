@@ -1,6 +1,7 @@
 # Autobalancer project
 
 This is my bachelor's project. Its goal was to create self balancing robot and use ML to controll it.
+![Real photo of the robot](photo.png)
 
 ## Build instructions
 
@@ -57,4 +58,12 @@ make [ml/pid/motor_driver]
         -ml/                   # source directory of machine learning version of autobalancer
         -motor-driver/         # source directory of motor driver's kernel module
         -pid/                  # source directory of machine learning version of autobalancer
+  - build-tensorflow.sh        # script run in docker container to build tensorflow with correct toolchain
+  - circuit.png                # diagram depicting phisical connection between rpi and other components
+  - Docerfile                  # file decribing build steps for docker container
+  - docker_makefile            # makefile coppied into docker container, resposible for actual build commands
+  - Makefile                   # makefile starting and building docker container with proper bind mounts
+  - training:
+    - self_balancing_robot.py  # training script for neural network used in the project
+    - model_diagram.png        # diagram showing model architecture
 ```
