@@ -36,6 +36,7 @@ public:
 
 void engine_stop(int sig)
 {
+    (void)sig;
     flag = 0;
 }
 
