@@ -1,6 +1,6 @@
 MAKE = make BR2_EXTERNAL=$(shell pwd)/br_external -C buildroot
 
-.PHONY: default clean save menuconfig ml pid rebuild deploy
+.PHONY: default clean save menuconfig ml pid motor_driver all
 
 default: ml
 
@@ -17,13 +17,13 @@ config:
 	${MAKE} autobalancer_defconfig
 
 ml: config
-	${MAKE} autobalancer-ml-rebuild
+	${MAKE} autobalancer-ml-reconfigure
 
 pid: config
-	${MAKE} autobalancer-pid-rebuild
+	${MAKE} autobalancer-pid-reconfigure
 
 motor_driver: config
-	${MAKE} motor-driver-rebuild
+	${MAKE} motor-driver-reconfigure
 
 all: config
 	${MAKE} autobalancer-pid-dirclean autobalancer-ml-dirclean motor-driver-dirclean all

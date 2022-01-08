@@ -14,7 +14,7 @@ class Logger
 private:
     const char *filename;
     Data buffer[HISTORY_SIZE];
-    int idx = 0;
+    size_t idx = 0;
 
 public:
     Logger(const char *filename) : filename(filename){};

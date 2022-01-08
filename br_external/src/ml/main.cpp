@@ -10,10 +10,16 @@
 #include <ctime>
 #include <cmath>
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#pragma GCC diagnostic ignored "-Wpedantic"
+
 #include "tensorflow/lite/interpreter.h"
 #include "tensorflow/lite/kernels/register.h"
 #include "tensorflow/lite/model.h"
 #include "tensorflow/lite/optional_debug_tools.h"
+
+#pragma GCC diagnostic pop
 
 #include "imu.hpp"
 #include "logger.hpp"
@@ -55,6 +61,7 @@ void set_engine_speed(float val)
 
 void engine_stop(int sig)
 {
+    (void)sig;
     flag = 0;
 }
 
@@ -110,7 +117,6 @@ void main_loop(int argc, char **argv)
 
     int n_prev = 50;
     float *prev_samples = (float *)calloc(n_prev, sizeof(float));
-    size_t filled = 0;
 
     for (int i = 0; i < n_prev; ++i)
     {
@@ -123,7 +129,6 @@ void main_loop(int argc, char **argv)
         timer.wait();
 
         float dt = timer.get_dt();
-        int c = 0;
         imu_angle = imu.getNewAngle();
         interpreter->typed_input_tensor<float>(0)[0] = imu_angle;
         memcpy(&interpreter->typed_input_tensor<float>(0)[1], prev_samples, n_prev * sizeof(float));

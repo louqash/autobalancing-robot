@@ -51,12 +51,13 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 execute_process(COMMAND "./build-tensorflow.sh" WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 
-include_directories(ml
+include_directories(
     "$ENV{tensorflow}/build/flatbuffers/include"
     "$ENV{tensorflow}"
 )
 
 add_executable(ml main.cpp imu.cpp i2cDevice.cpp timer.cpp)
 target_link_libraries(ml i2c rt dl pthread "$ENV{tensorflow}/build/libtensorflow-lite.a" ${TENSORFLOW_DEPS})
+target_compile_options(ml PRIVATE -Wall -Wextra -Wpedantic -Werror)
 
 install(TARGETS ml)

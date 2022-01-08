@@ -30,7 +30,6 @@ bool IMU::isConnected()
 int IMU::init()
 {
 
-    uint8_t old;
     writeBit(MPU6050_RA_PWR_MGMT_1, MPU6050_PWR1_DEVICE_RESET_BIT, true);
     usleep(30000);
     writeBit(MPU6050_RA_PWR_MGMT_1, MPU6050_PWR1_SLEEP_BIT, false);
@@ -210,7 +209,7 @@ float IMU::getNewAngle()
     do
     {
         int_status = readByte(MPU6050_RA_INT_STATUS);
-    } while (!int_status & 0x02);
+    } while (!(int_status & 0x02));
 
     while (fifo_count < dmpPacketSize)
     {
@@ -228,12 +227,12 @@ float IMU::getNewAngle()
     int16_t qy_i = ((int16_t)packet[8] << 8) | packet[9];
     int16_t qz_i = ((int16_t)packet[12] << 8) | packet[13];
 
-    int16_t ax_i = ((int16_t)packet[28] << 8) | packet[29];
-    int16_t ay_i = ((int16_t)packet[32] << 8) | packet[33];
-    int16_t az_i = ((int16_t)packet[36] << 8) | packet[37];
-    float ax = ax_i / 8192.0F;
-    float ay = ay_i / 8192.0F;
-    float az = az_i / 8192.0F;
+    //int16_t ax_i = ((int16_t)packet[28] << 8) | packet[29];
+    //int16_t ay_i = ((int16_t)packet[32] << 8) | packet[33];
+    //int16_t az_i = ((int16_t)packet[36] << 8) | packet[37];
+    //float ax = ax_i / 8192.0F;
+    //float ay = ay_i / 8192.0F;
+    //float az = az_i / 8192.0F;
 
     float qw = qw_i / 16384.0F;
     float qx = qx_i / 16384.0F;
