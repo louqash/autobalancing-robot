@@ -15,16 +15,10 @@ menuconfig:
 
 ml:
 	${MAKE} ml_autobalancer_defconfig
-	${MAKE} all
+	${MAKE} autobalancer-ml-rebuild motor-driver-rebuild all
 
 pid:
 	${MAKE} pid_autobalancer_defconfig
-	${MAKE} all
-
-rebuild-ml:
-	${MAKE} autobalancer-ml-rebuild motor-driver-rebuild all
-
-rebuild-pid:
 	${MAKE} autobalancer-pid-rebuild motor-driver-rebuild all
 
 .DEFAULT:

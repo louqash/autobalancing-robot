@@ -23,4 +23,6 @@ RUN git clone --branch "v2.7.0" https://github.com/tensorflow/tensorflow
 COPY build-tensorflow.sh .
 RUN chmod +x build-tensorflow.sh && ./build-tensorflow.sh
 
+ENV tensorflow=/workdir/tensorflow
+
 COPY docker_makefile Makefile
