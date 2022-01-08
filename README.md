@@ -1,7 +1,7 @@
 # Autobalancer project
 
 This is my bachelor's project. Its goal was to create self balancing robot and use ML to controll it.
-![Real photo of the robot](photo.png)
+<img src="photo.png" width="400">
 
 ## Build instructions
 
